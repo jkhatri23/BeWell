@@ -47,8 +47,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
         setLoading(true);
         try {
-            await authService.login(email, password);
-            navigation.replace('Home');
+            const cleanEmail = email.trim().replace(/^["']|["']$/g, '');
+            await authService.login({ email: cleanEmail, password });
+            navigation.replace('Survey');
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {

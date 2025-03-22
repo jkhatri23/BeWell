@@ -56,7 +56,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
         try {
             const credentials: RegisterCredentials = { name, email, password };
             await authService.register(credentials);
-            navigation.replace('Home');
+            navigation.replace('Survey');
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {

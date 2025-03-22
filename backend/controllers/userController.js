@@ -52,7 +52,10 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         console.log('Login attempt:', { ...req.body, password: '[REDACTED]' });
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        
+        // Clean up email format by removing extra quotes if present
+        email = email.replace(/^["']|["']$/g, '');
 
         // Find user by email (case-insensitive)
         const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });

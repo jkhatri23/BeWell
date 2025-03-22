@@ -5,11 +5,13 @@ import HomeScreen from './screens/HomeScreen';
 import CameraScreen from './screens/CameraScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import SurveyScreen from './screens/SurveyScreen';
 import { authService } from './services/authService';
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
+  Survey: undefined;
   Home: undefined;
   Camera: undefined;
 };
@@ -24,7 +26,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [photos, setPhotos] = useState<PhotoData[]>([]);
-  const [initialRoute, setInitialRoute] = useState<'Login' | 'Home' | 'Camera'>('Login');
+  const [initialRoute, setInitialRoute] = useState<'Login' | 'Home' | 'Camera' | 'Survey'>('Login');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   // Check if a photo was already taken today
@@ -100,6 +102,9 @@ export default function App() {
         </Stack.Screen>
         <Stack.Screen name="Register">
           {(props) => <RegisterScreen {...props} onRegister={() => setIsAuthenticated(true)} />}
+        </Stack.Screen>
+        <Stack.Screen name="Survey">
+          {(props) => <SurveyScreen {...props} />}
         </Stack.Screen>
         <Stack.Screen name="Home">
           {(props) => (
