@@ -39,11 +39,11 @@ export const homeStyles = StyleSheet.create({
     marginBottom: 24,
   },
   monthText: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 15,
     marginLeft: 10,
-    marginTop: 15,
+    marginTop: 10,
     color: '#F09E54',
     textAlign: 'left',
     fontFamily: 'Alegreya_700Bold',
@@ -55,7 +55,7 @@ export const homeStyles = StyleSheet.create({
   },
   weekdayText: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '500',
     color: '#666',
   },
@@ -69,7 +69,7 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   dayText: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 2,
   },
   dayTextBold: {
@@ -184,10 +184,11 @@ export const homeStyles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     marginTop: 30,
+    marginLeft: 10,
   },
   sunIcon: {
-    width: 48,
-    height: 48,
+    width: 90,
+    height: 60,
     marginLeft: 15,
   },
 }); 

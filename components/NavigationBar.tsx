@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { FontAwesome6, FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 
@@ -9,6 +9,11 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function NavigationBar() {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute();
+
+  const getIconColor = (routeName: string) => {
+    return route.name === routeName ? '#47134f' : '#BBBBBB';
+  };
 
   return (
     <View style={styles.container}>
@@ -16,21 +21,21 @@ export default function NavigationBar() {
         style={styles.iconContainer} 
         onPress={() => navigation.navigate('Home')}
       >
-        <Ionicons name="home" size={24} color="#007AFF" />
-      </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.iconContainer} 
-        onPress={() => navigation.navigate('Friends')}
-      >
-        <Ionicons name="people" size={24} color="#007AFF" />
+        <FontAwesome6 name="house" size={28} color={getIconColor('Home')} />
       </TouchableOpacity>
       
       <TouchableOpacity 
         style={styles.iconContainer} 
         onPress={() => navigation.navigate('Explore')}
       >
-        <Ionicons name="compass" size={24} color="#007AFF" />
+        <FontAwesome6 name="compass" size={28} color={getIconColor('Explore')} />
+      </TouchableOpacity>
+      
+      <TouchableOpacity 
+        style={styles.iconContainer} 
+        onPress={() => navigation.navigate('Friends')}
+      >
+        <FontAwesome5 name="user-friends" size={28} color={getIconColor('Friends')} />
       </TouchableOpacity>
     </View>
   );
@@ -42,11 +47,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E5E5',
+    paddingVertical: 30,
   },
   iconContainer: {
-    padding: 10,
+    padding: 12,
   },
 }); 

@@ -22,11 +22,7 @@ export default function CameraScreen({ navigation, images, addPhoto, hasPhotoFor
   // Check if photo already taken today
   useEffect(() => {
     if (hasPhotoForToday()) {
-      Alert.alert(
-        "Photo Already Taken",
-        "You've already taken your photo for today. Come back tomorrow!",
-        [{ text: "OK", onPress: () => navigation.navigate('Home') }]
-      );
+      navigation.navigate('Home');
     }
   }, [hasPhotoForToday, navigation]);
 
@@ -61,10 +57,7 @@ export default function CameraScreen({ navigation, images, addPhoto, hasPhotoFor
         setIsCapturing(false);
       }
     } else if (hasPhotoForToday()) {
-      Alert.alert(
-        "Photo Already Taken",
-        "You've already taken your photo for today. Come back tomorrow!"
-      );
+      navigation.navigate('Home');
     }
   }
 
