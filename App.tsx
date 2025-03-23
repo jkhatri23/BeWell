@@ -100,7 +100,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator 
+        initialRouteName={initialRoute} 
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'none' // Disable animations
+        }}
+      >
         <Stack.Screen name="Login">
           {(props) => <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />}
         </Stack.Screen>
