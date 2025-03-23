@@ -8,6 +8,7 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingTop: 50,
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontSize: 24,
@@ -75,8 +76,8 @@ export const homeStyles = StyleSheet.create({
     position: 'absolute',
     top: '40%',
     left: '50%',
-    transform: [{ translateX: -12 }, { translateY: -12 }],
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    transform: [{ translateX: -17 }, { translateY: -11 }],
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     borderRadius: 15,
     width: 30,
     height: 30,
