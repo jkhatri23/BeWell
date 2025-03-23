@@ -153,7 +153,13 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
 
   return (
     <View style={[homeStyles.container, { paddingBottom: 60 }]}>
-      <Text style={homeStyles.title}>One day at a time</Text>
+      <View style={homeStyles.titleContainer}>
+        <Text style={homeStyles.title}>One day at a time</Text>
+        <Image 
+          source={require('../assets/sun.png')} 
+          style={homeStyles.sunIcon}
+        />
+      </View>
       
       {photos.length === 0 ? (
         <View style={homeStyles.emptyContainer}>
@@ -272,7 +278,7 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
                     <Image 
                       source={{ uri: previewPhoto.uri }} 
                       style={homeStyles.previewImage} 
-                      resizeMode="contain"
+                      resizeMode="cover"
                     />
                     <TouchableOpacity 
                       style={homeStyles.closeButton}
@@ -301,6 +307,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#fff',
+    backgroundColor: '#e9bff5',
   },
 });
