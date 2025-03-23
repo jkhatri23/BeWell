@@ -2,7 +2,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Use the computer's local IP address for mobile device access
+<<<<<<< HEAD
 const API_URL = 'https://b8f6-138-51-78-110.ngrok-free.app/api';
+=======
+const API_URL = 'https://backend-232907245524.us-east1.run.app';
+>>>>>>> c0ea2634 (Update backend routes and add Docker configuration for Google Cloud Run deployment)
 
 // Create axios instance with default config
 const api = axios.create({

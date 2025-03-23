@@ -6,109 +6,99 @@ import {
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import { commonStyles } from '../styles/common.styles';
+
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Survey'>;
 
+
+interface SurveyAnswers {
+    mood: number;
+    stress: number;
+    sleep: number;
+}
+
+
 export default function SurveyScreen({ navigation }: Props) {
-    const [answers, setAnswers] = useState({
-        mood: 0,
-        stress: 0,
-        sleep: 0,
+    const [answers, setAnswers] = useState<SurveyAnswers>({
+        mood: 5,
+        stress: 5,
+        sleep: 5,
     });
+
 
     const questions = [
         {
             id: 'mood',
-            text: 'How would you rate your current mood?',
-            options: [
-                { value: 1, label: 'Very Poor' },
-                { value: 2, label: 'Poor' },
-                { value: 3, label: 'Neutral' },
-                { value: 4, label: 'Good' },
-                { value: 5, label: 'Very Good' },
-            ],
+            text: 'How would you rate your mood recently?',
         },
         {
             id: 'stress',
-            text: 'How would you rate your current stress level?',
-            options: [
-                { value: 1, label: 'Very High' },
-                { value: 2, label: 'High' },
-                { value: 3, label: 'Moderate' },
-                { value: 4, label: 'Low' },
-                { value: 5, label: 'Very Low' },
-            ],
+            text: 'How would you rate your stress level recently?',
         },
         {
             id: 'sleep',
-            text: 'How would you rate your sleep quality?',
-            options: [
-                { value: 1, label: 'Very Poor' },
-                { value: 2, label: 'Poor' },
-                { value: 3, label: 'Fair' },
-                { value: 4, label: 'Good' },
-                { value: 5, label: 'Very Good' },
-            ],
+            text: 'How would you rate your sleep quality recently?',
         },
     ];
 
-    const handleAnswer = (questionId: string, value: number) => {
-        setAnswers(prev => ({
+
+    const handleAnswer = (questionId: keyof SurveyAnswers, value: number) => {
+        setAnswers((prev) => ({
             ...prev,
             [questionId]: value,
         }));
     };
 
+
     const handleSubmit = () => {
-        // Here you could save the survey results to your backend
+        console.log("Survey Responses:", answers);
         navigation.replace('Camera');
     };
 
-    const isComplete = Object.values(answers).every(answer => answer > 0);
 
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Mental Wellness Check</Text>
-            <Text style={styles.subtitle}>Please answer these questions to help us understand your current mental state.</Text>
-            
+            <Text style={styles.subtitle}>
+                Please answer these questions to help us understand your current mental state.
+            </Text>
+
+
             {questions.map((question) => (
                 <View key={question.id} style={styles.questionContainer}>
                     <Text style={styles.questionText}>{question.text}</Text>
-                    <View style={styles.optionsContainer}>
-                        {question.options.map((option) => (
-                            <TouchableOpacity
-                                key={option.value}
-                                style={[
-                                    styles.optionButton,
-                                    answers[question.id as keyof typeof answers] === option.value && styles.selectedOption,
-                                ]}
-                                onPress={() => handleAnswer(question.id, option.value)}
-                            >
-                                <Text style={[
-                                    styles.optionText,
-                                    answers[question.id as keyof typeof answers] === option.value && styles.selectedOptionText,
-                                ]}>
-                                    {option.label}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                   
+                    <Slider
+                        style={{ width: '100%', height: 40 }}
+                        minimumValue={1}
+                        maximumValue={10}
+                        step={1}
+                        value={answers[question.id as keyof SurveyAnswers]}
+                        onValueChange={(value: number) => handleAnswer(question.id as keyof SurveyAnswers, value)}
+                        minimumTrackTintColor="#007AFF"
+                        maximumTrackTintColor="#ccc"
+                        thumbTintColor="#007AFF"
+                    />
+                    <Text style={styles.sliderValue}>
+                        {answers[question.id as keyof SurveyAnswers]}
+                    </Text>
                 </View>
             ))}
 
+
             <TouchableOpacity
-                style={[styles.submitButton, !isComplete && styles.submitButtonDisabled]}
+                style={styles.submitButton}
                 onPress={handleSubmit}
-                disabled={!isComplete}
             >
                 <Text style={styles.submitButtonText}>Continue</Text>
             </TouchableOpacity>
         </ScrollView>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -139,29 +129,12 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 15,
     },
-    optionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    optionButton: {
-        width: '48%',
-        padding: 15,
-        borderRadius: 8,
-        backgroundColor: '#f0f0f0',
-        marginBottom: 10,
-        alignItems: 'center',
-    },
-    selectedOption: {
-        backgroundColor: '#007AFF',
-    },
-    optionText: {
-        fontSize: 14,
-        color: '#333',
+    sliderValue: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#007AFF',
         textAlign: 'center',
-    },
-    selectedOptionText: {
-        color: '#fff',
+        marginTop: 5,
     },
     submitButton: {
         backgroundColor: '#007AFF',
@@ -171,12 +144,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 40,
     },
-    submitButtonDisabled: {
-        backgroundColor: '#ccc',
-    },
     submitButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
     },
-}); 
+});
+
+
+
+
+
