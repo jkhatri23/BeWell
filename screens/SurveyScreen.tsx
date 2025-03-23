@@ -5,10 +5,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
+    ActivityIndicator,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+import { COHERE_API_KEY } from 'react-native-dotenv';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Survey'>;
@@ -27,6 +29,7 @@ export default function SurveyScreen({ navigation }: Props) {
         stress: 5,
         sleep: 5,
     });
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const questions = [
@@ -52,10 +55,59 @@ export default function SurveyScreen({ navigation }: Props) {
         }));
     };
 
+    const generatePrompt = async () => {
+        setIsLoading(true);
+        try {
+            const promptText = `Generate a very short wellness activity suggestion (MAXIMUM 6 WORDS TOTAL) for someone with:
+            - Mood: ${answers.mood}/10 (higher is better)
+            - Stress level: ${answers.stress}/10 (higher is more stressed)
+            - Sleep quality: ${answers.sleep}/10 (higher is better)
+            
+            Examples of good responses:
+            - "Go for a walk outside."
+            - "Meditate for 10 minutes."
+            - "Hug a tree."
+            - "Take deep breaths."
+            - "Go for a run."
+            
+            Keep it extremely short (6 words maximum), actionable, and direct. Only give me the straightofrward response, no other words.`;
+            
+            const response = await fetch('https://api.cohere.ai/v1/generate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${COHERE_API_KEY}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: promptText,
+                    max_tokens: 20,
+                    temperature: 0.7,
+                    k: 0,
+                    p: 0.75,
+                }),
+            });
+            
+            const data = await response.json();
+            let generatedPrompt = data.generations?.[0]?.text?.trim() || "Take a deep breath";
+            
+            // Limit to first 6 words if response is too long
+            const words = generatedPrompt.split(/\s+/);
+            if (words.length > 6) {
+                generatedPrompt = words.slice(0, 6).join(' ');
+            }
+            
+            navigation.replace('Camera', { customPrompt: generatedPrompt });
+        } catch (error) {
+            console.error("Error generating prompt:", error);
+            navigation.replace('Camera', { customPrompt: "Take a deep breath" });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleSubmit = () => {
         console.log("Survey Responses:", answers);
-        navigation.replace('Camera');
+        generatePrompt();
     };
 
 
@@ -92,8 +144,13 @@ export default function SurveyScreen({ navigation }: Props) {
             <TouchableOpacity
                 style={styles.submitButton}
                 onPress={handleSubmit}
+                disabled={isLoading}
             >
-                <Text style={styles.submitButtonText}>Continue</Text>
+                {isLoading ? (
+                    <ActivityIndicator color="#fff" />
+                ) : (
+                    <Text style={styles.submitButtonText}>Continue</Text>
+                )}
             </TouchableOpacity>
         </ScrollView>
     );

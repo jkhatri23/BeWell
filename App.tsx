@@ -13,13 +13,13 @@ import ExploreScreen from './screens/ExploreScreen';
 import { authService } from './services/authService';
 
 export type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  Survey: undefined;
-  Home: undefined;
-  Camera: undefined;
-  Friends: undefined;
-  Explore: undefined;
+  Login: undefined | {};
+  Register: undefined | {};
+  Survey: undefined | {};
+  Home: undefined | {};
+  Camera: { customPrompt?: string } | undefined;
+  Friends: undefined | {};
+  Explore: undefined | {};
 };
 
 export interface PhotoData {

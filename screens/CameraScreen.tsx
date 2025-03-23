@@ -13,11 +13,12 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Camera'> & {
   hasPhotoForToday: () => boolean;
 };
 
-export default function CameraScreen({ navigation, images, addPhoto, hasPhotoForToday }: Props) {
+export default function CameraScreen({ navigation, route, images, addPhoto, hasPhotoForToday }: Props) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
+  const { customPrompt } = route.params || { customPrompt: "Enjoy the little things" };
   
   // Check if photo already taken today
   useEffect(() => {
@@ -65,7 +66,7 @@ export default function CameraScreen({ navigation, images, addPhoto, hasPhotoFor
     <View style={cameraStyles.container}>
       <CameraView style={cameraStyles.camera} facing={facing} ref={cameraRef}>
         <View style={cameraStyles.headerContainer}>
-          <Text style={cameraStyles.headerText}>Take your daily photo</Text>
+          <Text style={cameraStyles.headerText}>{customPrompt}</Text>
         </View>
         <View style={cameraStyles.buttonContainer}>
           <TouchableOpacity style={cameraStyles.flipButton} onPress={toggleCameraFacing}>

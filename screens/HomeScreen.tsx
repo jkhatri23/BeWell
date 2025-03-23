@@ -9,6 +9,7 @@ import NavigationBar from '../components/NavigationBar';
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'> & {
   photos: PhotoData[];
   hasPhotoForToday: () => boolean;
+  onLogout: () => Promise<void>;
 }
 
 type CalendarDay = {
@@ -18,7 +19,7 @@ type CalendarDay = {
   currentMonth: boolean;
 };
 
-export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Props) {
+export default function HomeScreen({ navigation, photos, hasPhotoForToday, onLogout }: Props) {
   // State for photo preview
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<PhotoData | null>(null);
@@ -151,6 +152,10 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
   const screenWidth = Dimensions.get('window').width;
   const daySize = (screenWidth - 32) / 7; // 7 days per week, minus padding
 
+  const takeTodaysPhoto = () => {
+    navigation.navigate('Camera');
+  };
+
   return (
     <View style={[homeStyles.container, { paddingBottom: 60 }]}>
       <View style={homeStyles.titleContainer}>
@@ -166,7 +171,7 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
           <Text style={homeStyles.noImagesText}>No photos yet. Take your first photo!</Text>
           <TouchableOpacity 
             style={commonStyles.button} 
-            onPress={() => navigation.navigate('Camera')}
+            onPress={takeTodaysPhoto}
           >
             <Text style={commonStyles.buttonText}>Take Photo</Text>
           </TouchableOpacity>
@@ -258,6 +263,14 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
               </View>
             ))}
           </ScrollView>
+          <TouchableOpacity
+            style={[homeStyles.takePhotoButton, !hasPhotoForToday() && homeStyles.takePhotoButtonHighlighted]}
+            onPress={() => navigation.navigate('Camera', {})}
+          >
+            <Text style={homeStyles.takePhotoButtonText}>
+              {hasPhotoForToday() ? 'View Today\'s Photo' : 'Take Today\'s Photo'}
+            </Text>
+          </TouchableOpacity>
         </>
       )}
 
