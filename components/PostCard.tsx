@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { PostData } from '../utils/mockData';
 
 interface PostCardProps {
   post: PostData;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
-  const { name, prompt, profileColor, time } = post;
+const PostCard: React.FC<PostCardProps> = ({ post }: { post: PostData }) => {
+  const { name, prompt, profileColor, time, image } = post;
   const firstLetter = name.charAt(0).toUpperCase();
   const screenWidth = Dimensions.get('window').width;
 
@@ -24,7 +24,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </View>
       <Text style={styles.prompt}>{prompt}</Text>
       <View style={styles.imageContainer}>
-        <View style={[styles.image, { width: screenWidth - 32, height: screenWidth - 32 }]} />
+        <Image source={image} style={[styles.image, { width: screenWidth - 32, height: screenWidth - 32 }]} />
       </View>
     </View>
   );

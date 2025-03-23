@@ -8,35 +8,40 @@ export interface PostData {
   prompt: string;
   profileColor: string;
   time: string;
+  image: ImageSourcePropType;
 }
 
 export const MOCK_POSTS: PostData[] = [
   {
     id: '1',
-    name: 'Sarah Johnson',
-    prompt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in metus eu nisi tempor efficitur.',
+    name: 'Harley Zhang',
+    prompt: 'Call a friend',
     profileColor: '#FF6B6B',
-    time: '9:30 AM',
+    time: '4:45 AM',
+    image: require('./assets/harley.png'),
   },
   {
     id: '2',
-    name: 'Mike Chen',
-    prompt: 'Praesent vulputate mi vitae libero feugiat, ac pulvinar dolor fermentum. Sed ornare eros eu felis lobortis.',
+    name: 'Sebastian Stefenel',
+    prompt: '"Go for a run!"',
     profileColor: '#4ECDC4',
-    time: '2:15 PM',
+    time: '4:18 AM',
+    image: require('./assets/seb.png'),
   },
   {
     id: '3',
-    name: 'Taylor Wright',
-    prompt: 'Donec viverra dui ut purus dictum tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et.',
+    name: 'Jordan Khatri',
+    prompt: 'Do some yoga',
     profileColor: '#45B7D1',
-    time: '11:45 AM',
+    time: '4:12 AM',
+    image: require('./assets/jordan.png'),
   },
   {
     id: '4',
-    name: 'Priya Patel',
-    prompt: 'Fusce ullamcorper augue et lectus tempus, non feugiat nibh ultrices. Integer ac enim felis.',
+    name: 'Andrew Mazour',
+    prompt: 'Meditate for 5 minutes',
     profileColor: '#98D8AA',
-    time: '5:20 PM',
+    time: '4:04 AM',
+    image: require('./assets/andrew.png'),
   },
 ]; 

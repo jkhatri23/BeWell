@@ -28,7 +28,7 @@ export default function SurveyScreen({ navigation }: Props) {
             
             "${feelings}"
             
-            Only return the suggestion with no explanation or context. Responses must be visible activities, places, or objects—no abstract actions like 'breathe' or 'relax'. Only return the suggestion with no explanation, context or quotation marks. MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
+            Only return the suggestion with no explanation or context. Responses must be visible activities that can be feasibly done conveniently that would uplift your mental health in the situation—no abstract actions like 'breathe' or 'relax' or symbolic gestures. Good examples include: going for a run, going for a walk, doing yoga, meditating, reading a book, listening to your favorite song, calling your family, etc. Only return the suggestion as a short sentence (grammar) with no explanation, context or quotation marks. MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
             
             const response = await fetch('https://api.cohere.ai/v1/generate', {
                 method: 'POST',
