@@ -3,11 +3,13 @@ import {
     View,
     Text,
     StyleSheet,
+    TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    Platform,
     ScrollView,
     ActivityIndicator,
 } from 'react-native';
-import Slider from '@react-native-community/slider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
 
@@ -15,61 +17,18 @@ import { RootStackParamList } from '../App';
 type Props = NativeStackScreenProps<RootStackParamList, 'Survey'>;
 
 
-interface SurveyAnswers {
-    mood: number;
-    stress: number;
-    sleep: number;
-}
-
-
 export default function SurveyScreen({ navigation }: Props) {
-    const [answers, setAnswers] = useState<SurveyAnswers>({
-        mood: 5,
-        stress: 5,
-        sleep: 5,
-    });
+    const [feelings, setFeelings] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-
-    const questions = [
-        {
-            id: 'mood',
-            text: 'How would you rate your mood recently?',
-        },
-        {
-            id: 'stress',
-            text: 'How would you rate your stress level recently?',
-        },
-        {
-            id: 'sleep',
-            text: 'How would you rate your sleep quality recently?',
-        },
-    ];
-
-
-    const handleAnswer = (questionId: keyof SurveyAnswers, value: number) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value,
-        }));
-    };
 
     const generatePrompt = async () => {
         setIsLoading(true);
         try {
-            const promptText = `Generate a very short wellness activity suggestion (MAXIMUM 6 WORDS TOTAL) for someone with:
-            - Mood: ${answers.mood}/10 (higher is better)
-            - Stress level: ${answers.stress}/10 (higher is more stressed)
-            - Sleep quality: ${answers.sleep}/10 (higher is better)
+            const promptText = `Based on the following feelings, provide a very short, lighthearted, and direct wellness activity suggestion that one could take a picture (MAXIMUM 8 WORDS TOTAL):
             
-            Examples of good responses:
-            - "Go for a walk outside."
-            - "Meditate for 10 minutes."
-            - "Hug a tree."
-            - "Take deep breaths."
-            - "Go for a run."
+            "${feelings}"
             
-            Keep it extremely short (6 words maximum), actionable, and direct. Only give me the straightofrward response, no other words.`;
+            Only return the suggestion with no explanation or context. Responses must be visible activities, places, or objects—no abstract actions like 'breathe' or 'relax'. Only return the suggestion with no explanation, context or quotation marks. MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
             
             const response = await fetch('https://api.cohere.ai/v1/generate', {
                 method: 'POST',
@@ -89,10 +48,10 @@ export default function SurveyScreen({ navigation }: Props) {
             const data = await response.json();
             let generatedPrompt = data.generations?.[0]?.text?.trim() || "Take a deep breath";
             
-            // Limit to first 6 words if response is too long
+            // Limit to first 10 words if response is too long
             const words = generatedPrompt.split(/\s+/);
-            if (words.length > 6) {
-                generatedPrompt = words.slice(0, 6).join(' ');
+            if (words.length > 10) {
+                generatedPrompt = words.slice(0, 10).join(' ');
             }
             
             navigation.replace('Camera', { customPrompt: generatedPrompt });
@@ -105,41 +64,28 @@ export default function SurveyScreen({ navigation }: Props) {
     };
 
     const handleSubmit = () => {
-        console.log("Survey Responses:", answers);
+        console.log("Feelings:", feelings);
         generatePrompt();
     };
 
 
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.title}>Mental Wellness Check</Text>
-            <Text style={styles.subtitle}>
-                Please answer these questions to help us understand your current mental state.
-            </Text>
-
-
-            {questions.map((question) => (
-                <View key={question.id} style={styles.questionContainer}>
-                    <Text style={styles.questionText}>{question.text}</Text>
-                   
-                    <Slider
-                        style={{ width: '100%', height: 40 }}
-                        minimumValue={1}
-                        maximumValue={10}
-                        step={1}
-                        value={answers[question.id as keyof SurveyAnswers]}
-                        onValueChange={(value: number) => handleAnswer(question.id as keyof SurveyAnswers, value)}
-                        minimumTrackTintColor="#007AFF"
-                        maximumTrackTintColor="#ccc"
-                        thumbTintColor="#007AFF"
-                    />
-                    <Text style={styles.sliderValue}>
-                        {answers[question.id as keyof SurveyAnswers]}
-                    </Text>
-                </View>
-            ))}
-
-
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <Text style={styles.title}>Weekly Check-In</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Start spilling your feelings..."
+                    placeholderTextColor="#999"
+                    multiline
+                    maxLength={1000}
+                    value={feelings}
+                    onChangeText={setFeelings}
+                />
+            </ScrollView>
             <TouchableOpacity
                 style={styles.submitButton}
                 onPress={handleSubmit}
@@ -148,10 +94,10 @@ export default function SurveyScreen({ navigation }: Props) {
                 {isLoading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.submitButtonText}>Continue</Text>
+                    <Text style={styles.submitButtonText}>Submit</Text>
                 )}
             </TouchableOpacity>
-        </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -159,51 +105,45 @@ export default function SurveyScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: '#fff',
         paddingTop: 60,
     },
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
     title: {
-        fontSize: 24,
+        fontSize: 32,
         fontWeight: 'bold',
-        marginBottom: 10,
-        textAlign: 'center',
-        color: '#333',
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#666',
-        textAlign: 'center',
         marginBottom: 30,
+        marginTop: 30,
+        textAlign: 'left',
+        fontFamily: 'Alegreya_700Bold',
+        color: '#47134f',
     },
-    questionContainer: {
-        marginBottom: 30,
-    },
-    questionText: {
+    textInput: {
         fontSize: 18,
-        fontWeight: '600',
-        color: '#333',
-        marginBottom: 15,
-    },
-    sliderValue: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#007AFF',
-        textAlign: 'center',
-        marginTop: 5,
+        color: '#666',
+        padding: 20,
+        borderRadius: 8,
+        backgroundColor: '#f2f2f2',
+        textAlignVertical: 'top',
+        height: 200,
     },
     submitButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#e9bff5',
         padding: 15,
         borderRadius: 8,
         alignItems: 'center',
-        marginTop: 20,
-        marginBottom: 40,
+        marginHorizontal: 20,
+        marginBottom: 20,
     },
     submitButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'Alegreya_700Bold',
     },
 });
 
