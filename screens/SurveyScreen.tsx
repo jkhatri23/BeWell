@@ -24,11 +24,11 @@ export default function SurveyScreen({ navigation }: Props) {
     const generatePrompt = async () => {
         setIsLoading(true);
         try {
-            const promptText = `Based on the following feelings, provide a very short, lighthearted, and direct wellness activity suggestion that one could take a picture (MAXIMUM 8 WORDS TOTAL):
+            const promptText = `Based on the following feelings, provide a short, actionable, and direct wellness activity suggestion that one could take a picture (MAXIMUM 8 WORDS TOTAL):
             
             "${feelings}"
             
-            Only return the suggestion with no explanation or context. Responses must be visible activities that can be feasibly done conveniently that would uplift your mental health in the situation—no abstract actions like 'breathe' or 'relax' or symbolic gestures. Good examples include: going for a run, going for a walk, doing yoga, meditating, reading a book, listening to your favorite song, calling your family, etc. Only return the suggestion as a short sentence (grammar) with no explanation, context or quotation marks. MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
+            Only return the suggestion with no explanation or context. Make SURE they are VERY SPECIFIC, something like "Call a loved one you haven't talked to in a while"   MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
             
             const response = await fetch('https://api.cohere.ai/v1/generate', {
                 method: 'POST',
