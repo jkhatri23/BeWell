@@ -10,7 +10,6 @@ import {
 import Slider from '@react-native-community/slider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-import { COHERE_API_KEY } from 'react-native-dotenv';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Survey'>;
@@ -75,7 +74,7 @@ export default function SurveyScreen({ navigation }: Props) {
             const response = await fetch('https://api.cohere.ai/v1/generate', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${COHERE_API_KEY}`,
+                    'Authorization': 'Bearer fuzhxwN3KcfY51FwK1EaP3E4YKE1wPHxAhRAmun7',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
