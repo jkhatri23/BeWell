@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFonts, Alegreya_400Regular, Alegreya_700Bold } from '@expo-google-fonts/alegreya';
+import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import CameraScreen from './screens/CameraScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -28,6 +30,11 @@ export default function App() {
   const [photos, setPhotos] = useState<PhotoData[]>([]);
   const [initialRoute, setInitialRoute] = useState<'Login' | 'Home' | 'Camera' | 'Survey'>('Login');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  const [fontsLoaded] = useFonts({
+    Alegreya_400Regular,
+    Alegreya_700Bold
+  });
   
   // Check if a photo was already taken today
   const hasPhotoForToday = (): boolean => {
@@ -94,18 +101,16 @@ export default function App() {
     }
   };
 
+  if (!fontsLoaded) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Loading fonts...</Text></View>;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login">
-          {(props) => <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />}
-        </Stack.Screen>
-        <Stack.Screen name="Register">
-          {(props) => <RegisterScreen {...props} onRegister={() => setIsAuthenticated(true)} />}
-        </Stack.Screen>
-        <Stack.Screen name="Survey">
-          {(props) => <SurveyScreen {...props} />}
-        </Stack.Screen>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Survey" component={SurveyScreen} />
         <Stack.Screen name="Home">
           {(props) => (
             <HomeScreen
