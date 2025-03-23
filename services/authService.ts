@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GOOGLE_CLOUD_API_URL } from '@env';
 
-const API_URL = 'https://3cc4-138-51-78-110.ngrok-free.app/api';
+const API_URL = GOOGLE_CLOUD_API_URL || 'https://bewell-api-232907245524.us-central1.run.app/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -35,6 +36,11 @@ export interface RegisterCredentials extends LoginCredentials {
     name: string;
 }
 
+interface ApiError {
+    message: string;
+    data?: any;
+}
+
 export const authService = {
     async register(credentials: RegisterCredentials): Promise<User> {
         try {
@@ -52,25 +58,22 @@ export const authService = {
                 throw new Error('Invalid response from server');
             }
         } catch (error) {
+            const axiosError = error as AxiosError<ApiError>;
             console.error('Registration error details:', {
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-                headers: error.response?.headers
+                message: axiosError.message,
+                response: axiosError.response?.data,
+                status: axiosError.response?.status,
+                headers: axiosError.response?.headers
             });
             
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.error('Error response:', error.response.data);
-                throw error.response.data.message || 'Registration failed';
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.error('No response received:', error.request);
+            if (axiosError.response) {
+                console.error('Error response:', axiosError.response.data);
+                throw axiosError.response.data.message || 'Registration failed';
+            } else if (axiosError.request) {
+                console.error('No response received:', axiosError.request);
                 throw 'No response from server. Please check your connection.';
             } else {
-                // Something happened in setting up the request that triggered an Error
-                console.error('Error setting up request:', error.message);
+                console.error('Error setting up request:', axiosError.message);
                 throw 'Failed to connect to server. Please try again.';
             }
         }
@@ -92,25 +95,22 @@ export const authService = {
                 throw new Error('Invalid response from server');
             }
         } catch (error) {
+            const axiosError = error as AxiosError<ApiError>;
             console.error('Login error details:', {
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-                headers: error.response?.headers
+                message: axiosError.message,
+                response: axiosError.response?.data,
+                status: axiosError.response?.status,
+                headers: axiosError.response?.headers
             });
             
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.error('Error response:', error.response.data);
-                throw error.response.data.message || 'Login failed';
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.error('No response received:', error.request);
+            if (axiosError.response) {
+                console.error('Error response:', axiosError.response.data);
+                throw axiosError.response.data.message || 'Login failed';
+            } else if (axiosError.request) {
+                console.error('No response received:', axiosError.request);
                 throw 'No response from server. Please check your connection.';
             } else {
-                // Something happened in setting up the request that triggered an Error
-                console.error('Error setting up request:', error.message);
+                console.error('Error setting up request:', axiosError.message);
                 throw 'Failed to connect to server. Please try again.';
             }
         }
@@ -124,7 +124,8 @@ export const authService = {
         try {
             await api.post('/users/upload-photo', { url, caption });
         } catch (error) {
-            throw error.response?.data?.message || 'Photo upload failed';
+            const axiosError = error as AxiosError<ApiError>;
+            throw axiosError.response?.data?.message || 'Photo upload failed';
         }
     },
 
