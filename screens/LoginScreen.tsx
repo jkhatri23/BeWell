@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     inputError: {
-        borderColor: '#ff3b30',
+        borderColor: '#f5b5b5',
         borderWidth: 1,
     },
     errorText: {
-        color: '#ff3b30',
+        color: '#fff',
         fontSize: 12,
         marginBottom: 15,
         marginLeft: 5,
