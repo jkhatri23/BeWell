@@ -8,6 +8,8 @@ import CameraScreen from './screens/CameraScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import SurveyScreen from './screens/SurveyScreen';
+import FriendsScreen from './screens/FriendsScreen';
+import ExploreScreen from './screens/ExploreScreen';
 import { authService } from './services/authService';
 
 export type RootStackParamList = {
@@ -16,6 +18,8 @@ export type RootStackParamList = {
   Survey: undefined;
   Home: undefined;
   Camera: undefined;
+  Friends: undefined;
+  Explore: undefined;
 };
 
 export interface PhotoData {
@@ -28,7 +32,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [photos, setPhotos] = useState<PhotoData[]>([]);
-  const [initialRoute, setInitialRoute] = useState<'Login' | 'Home' | 'Camera' | 'Survey'>('Login');
+  const [initialRoute, setInitialRoute] = useState<'Login' | 'Home' | 'Camera' | 'Survey' | 'Friends' | 'Explore'>('Login');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   const [fontsLoaded] = useFonts({
@@ -107,7 +111,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator 
+        initialRouteName={initialRoute} 
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'none' // Disable animations
+        }}
+      >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Survey" component={SurveyScreen} />
@@ -130,6 +140,12 @@ export default function App() {
               hasPhotoForToday={hasPhotoForToday}
             />
           )}
+        </Stack.Screen>
+        <Stack.Screen name="Friends">
+          {(props) => <FriendsScreen {...props} />}
+        </Stack.Screen>
+        <Stack.Screen name="Explore">
+          {(props) => <ExploreScreen {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

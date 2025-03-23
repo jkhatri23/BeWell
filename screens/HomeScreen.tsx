@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, PhotoData } from '../App';
 import { homeStyles } from '../styles/HomeScreen.styles';
 import { colors, commonStyles } from '../styles/common.styles';
+import NavigationBar from '../components/NavigationBar';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'> & {
   photos: PhotoData[];
@@ -151,7 +152,7 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
   const daySize = (screenWidth - 32) / 7; // 7 days per week, minus padding
 
   return (
-    <View style={homeStyles.container}>
+    <View style={[homeStyles.container, { paddingBottom: 60 }]}>
       <Text style={homeStyles.title}>One day at a time</Text>
       
       {photos.length === 0 ? (
@@ -251,16 +252,6 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
               </View>
             ))}
           </ScrollView>
-          
-          <TouchableOpacity 
-            style={[homeStyles.cameraButton, hasPhotoForToday() ? commonStyles.disabledButton : {}]} 
-            onPress={() => navigation.navigate('Camera')}
-            disabled={hasPhotoForToday()}
-          >
-            <Text style={commonStyles.buttonText}>
-              {hasPhotoForToday() ? "Come back tomorrow" : "Take today's photo"}
-            </Text>
-          </TouchableOpacity>
         </>
       )}
 
@@ -296,6 +287,20 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday }: Pro
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+
+      <View style={styles.navBarContainer}>
+        <NavigationBar />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  navBarContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+  },
+});
