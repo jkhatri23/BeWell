@@ -1134,6 +1134,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/alegreya@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/@expo-google-fonts/alegreya/-/alegreya-0.2.3.tgz"
+  integrity sha512-RY78yJypwE49uODkqfIBNJ+N6eMS5veoPB2zF5aS1l9zLNtQbKQp9WY7dKMKprh9jrZlw8VoqGWsTizVVXeZfQ==
+
 "@expo/bunyan@^4.0.0":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@expo/bunyan/-/bunyan-4.0.1.tgz"
@@ -3569,7 +3574,7 @@ expo-file-system@~18.0.11:
   dependencies:
     web-streams-polyfill "^3.3.2"
 
-expo-font@~13.0.4:
+expo-font@^13.0.4, expo-font@~13.0.4:
   version "13.0.4"
   resolved "https://registry.npmjs.org/expo-font/-/expo-font-13.0.4.tgz"
   integrity sha512-eAP5hyBgC8gafFtprsz0HMaB795qZfgJWqTmU0NfbSin1wUuVySFMEPMOrTkTgmazU73v4Cb4x7p86jY1XXYUw==
