@@ -148,7 +148,7 @@ export default function App() {
           {(props) => <FriendsScreen {...props} />}
         </Stack.Screen>
         <Stack.Screen name="Explore">
-          {(props) => <ExploreScreen {...props} />}
+          {(props) => <ExploreScreen {...props} photos={photos} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

@@ -80,15 +80,16 @@ export const homeStyles = StyleSheet.create({
   },
   dateOverlay: {
     position: 'absolute',
-    top: '40%',
+    top: '50%',
     left: '50%',
-    transform: [{ translateX: -17 }, { translateY: -10 }],
+    transform: [{ translateX: -15 }, { translateY: -15 }],
     backgroundColor: 'rgba(255, 255, 255, 1)',
     borderRadius: 15,
     width: 30,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 10,
   },
   todayCircle: {
     backgroundColor: 'white',
@@ -111,8 +112,19 @@ export const homeStyles = StyleSheet.create({
   notCurrentMonthText: {
     color: '#999',
   },
-  thumbnail: {
+  thumbnailBorderOuter: {
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius: 6,
+    padding: 1,
+  },
+  thumbnailBorderInner: {
+    borderWidth: 1,
+    borderColor: '#FFF',
     borderRadius: 4,
+  },
+  thumbnail: {
+    borderRadius: 2,
   },
   button: {
     backgroundColor: '#4285F4',

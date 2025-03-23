@@ -224,10 +224,14 @@ export default function HomeScreen({ navigation, photos, hasPhotoForToday, onLog
                                   style={homeStyles.dayWithPhotoContainer}
                                   onPress={() => openPhotoPreview(day.photo!, day.date)}
                                 >
-                                  <Image 
-                                    source={{ uri: day.photo.uri }} 
-                                    style={[homeStyles.thumbnail, { width: daySize - 8, height: daySize - 8 }]} 
-                                  />
+                                  <View style={homeStyles.thumbnailBorderOuter}>
+                                    <View style={homeStyles.thumbnailBorderInner}>
+                                      <Image 
+                                        source={{ uri: day.photo.uri }} 
+                                        style={[homeStyles.thumbnail, { width: daySize - 12, height: daySize - 12 }]} 
+                                      />
+                                    </View>
+                                  </View>
                                   <View style={[
                                     homeStyles.dateOverlay,
                                     isToday && homeStyles.todayOverlay
