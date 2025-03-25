@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
+import { COHERE_API_KEY, COHERE_API_URL } from '@env';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Survey'>;
@@ -30,10 +31,10 @@ export default function SurveyScreen({ navigation }: Props) {
             
             Only return the suggestion with no explanation or context. Make SURE they are VERY SPECIFIC, something like "Call a loved one you haven't talked to in a while"   MANDATORY TO KEEP IT TO AROUND 8 WORDS.`;
             
-            const response = await fetch('https://api.cohere.ai/v1/generate', {
+            const response = await fetch(COHERE_API_URL, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer fuzhxwN3KcfY51FwK1EaP3E4YKE1wPHxAhRAmun7',
+                    'Authorization': `Bearer ${COHERE_API_KEY}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
