@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GOOGLE_CLOUD_API_URL } from '@env';
 
-const API_URL = GOOGLE_CLOUD_API_URL || 'https://bewell-api-232907245524.us-central1.run.app/api';
+const API_URL = GOOGLE_CLOUD_API_URL 
 
 const api = axios.create({
     baseURL: API_URL,
